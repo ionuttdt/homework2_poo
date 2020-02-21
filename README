@@ -1,0 +1,78 @@
+Duta Viorel-Ionut, 321CB, Tema 2 POO
+
+	Pentru a implementa aceasta tema a trebuit sa simulez constructia unei baze
+de date NoSQL.
+	Pentru a realiza teama am construit 7 clase: DataBase, Element, Entitate, 
+Node, Read, Tema2 si TipEntitate. Implementarea si/sau apelarea cerintelor din
+enuntul temei fiind facuta in clasa Read.
+	In continuare o sa prezint fiecare clasa pe scurt pentru a ma putea referi
+mai usor la ele atunci cand o sa explic cum am rezolvat tema propusa.
+	In clasa TipEntitate construiesc un nou tip de obiect pe care il folosesc
+ca sa construiesc lista in care stochez atributul si tipul fiecarui element.
+Am construit acesta clasa ca sa memorez mai usor un nou tip de element ce poate
+fi adaugat in baza de date, avand numele atributului alaturi de tipul acestuia
+(int, float sau string) intr-un element din lista.
+Clasa Entitate utilizeaza clasa de mai sus pentru a putea constui si stoca tipuri
+noi de obiecte, ceva asemantor structurilor din C, avand toate informatiile despre
+un element din baza dde date memorate in entitatea acestuia.
+	Cealalta clasa aflata la baza implementarii temei este Element. Aceasta contine
+pe langa numele entitatii de care apartine elementul, RF-ul acestuia, numarul 
+de elemente si timpul adaugarii acestuia , si o lista de obiecte ce pot si Integer,
+String sau Float. In lista stochez doar valorile, pentru a sti si ce reprezinta 
+acestea trebuie sa caut entitatea de care aprtine elementul si sa parcurg 
+concomitent listele. Pentru elemente am am o metoda care imi creaza o clona
+si una care compara timpul elementului curent cu cel al unui element dat ca 
+parametru.
+	In clasa Node am doar indexul nodului si o lista cu elemente;eu ma folosesc
+de aceasta clasa pentru a construi structura propriu-zisa de baza de date.
+	DataBase este clasa care aduce la un loc toate clasele prezentate pana acum.
+Aceasta are un element de tip string pentru a ii memora numele,numarul curent de
+noduri, capacitatea maxima pe care o au noduri, o lista de elemente de tip Entitate
+pentru a sti toate tipurile de obiecte ce pot fi introduse in baza de date si
+o lista de noduri pentru a stoca elementele.
+Constructorul pentru DataBase seteaza o parte din variabilele prezentate mai sus
+si construieste no_nodes noduri(este setat si id-ul nodului). Aceasta clasa dispune
+de metoda care adauga un element in RF noduri, mai precis clone ale unui element,
+o alta metoda care sterge un element din baza de date(din fiecare nod) si doua 
+functii care sunt folosite pentru a verifica daca baza de date are suficient spatiu
+disponibil pentru a introduce un element de RF ori. Daca nu dispun de suficiente
+noduri pentru a face adaugarea corecta a unui element, metoda cu semnatura
+public void bonusfull(Element e) va adauga noduri pana cand adaugarea se poate
+realiza in conditii normale.
+	Cum in clasa Tema2.java ,care contine metoda main,doar citesc fisierul de
+intrare, am sa trec la descrierea setului de comenzi.
+	In clasa Read, dupa ce construiesc fisierul de iesire si instrumentele
+necesare pentru citirea din fisier si scriere, imi construiesc baza de date cu
+datale de pe primul rand al fisierului(am tinut cont de faptul ca se lucreaza cu
+o singura baza de date in acelasi timp). Cat timp nu am ajuns la sfarsitul
+fisierului de intrare, citesc fiecare rand intr-un string, ii fac split folosind
+ca delimitator space si il memorez fiecare cuvant intr-un vector.
+	Daca comnada este CREATE, trebuie sa construiesc o noua entitate si sa o
+introduc in lista de entitati. Prima data apelez constructorul pentru a seta numele
+si celellate atribute, iar dupa introduc pe rand atributul si tipul acestuia in
+lista.
+	Comenda INSERT presupune ,pe langa inserarea elementului in baza de date, si
+construirea acestuia.Pentru inceput ii caut entitatea asocita pentru a sti care
+este tipul atributelor acestuia si RF-ul. Dupa ce am facut acest lucru, urmeaza
+construirea elementului folosind constructorul, introducerea valorilor asociate
+acestuia in lista si aplarea metodei de adaugare in baza de date (aceatsa metoda
+a fost prezentata mai sus).
+	Pentru instructiunea DELETE apelez metoda de sterge a unui element din baza
+baza de date, iar in cazul in care elemntul nu a fost gasit se afiseaza mesajul 
+de eroare corespunzator.
+	Cand vine vorba de UPDATE, caut entitatea si elementul(in functie de key), 
+citesc din vectorul de stringuri noile atribute, le caut in entitate si pe urma
+le modific folosind aceeasi pozitie in lista ca cea din entitate.
+	Pentru instructiunea GET trebuie mai intai sa gasesc toate nodurile in care
+se afla elementul, sa folosesc un string pentru a le memora si pe urma sa iau
+atributul din entitate si valoarea corespunzatoare din element pentru a le afisa.
+	Asemanatoare comezii GET, SNAPSHOTDB nu are nevoie de parcurgeri pentru a
+cauta un element anume, ci parcurge fiecare nod, afiseaza numele acestuia
+("Nod" + id-ul nodului) si pe urma toate elemenetel aflate in nod la momentul
+respectiv.
+	Instructiunea CLEANUP doar apeleaa o metoda prezentata mai sus, removeTime.
+Ea parcurge toata lista si verifica daca trebuie sterg elementul curent.
+	Pentru a ma asigura ca este mereu spatiu in baza de date pentru a adauga
+corect un element, calculez de cate noduri sunt necesare pentru a putea introduce
+corect un elemnt si dupa le adaug.
+
